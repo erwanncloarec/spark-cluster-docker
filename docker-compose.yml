@@ -1,0 +1,25 @@
+version: '2'
+services:
+  master:
+    build: ./master 
+    hostname: master
+    container_name: master
+    ports:
+      - "8080:8080"
+    command: -h master
+    networks:
+      - spark
+  worker:
+    build: ./worker
+    hostname: worker1
+    container_name: worker1
+    ports:
+      - "8081:8081"
+    command: -i worker1 spark://master:7077
+    networks:
+      - spark
+    depends_on: 
+      - master 
+networks:
+  spark:
+    driver: bridge 
